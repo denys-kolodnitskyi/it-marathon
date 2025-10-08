@@ -86,7 +86,7 @@
           "colorMode": "critical",
           "line": true,
           "op": "lt",
-          "value": 200,
+          "value": 100,
           "fill": true,
           "yaxis": "left"
         }
