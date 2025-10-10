@@ -253,3 +253,23 @@ resource "aws_lb_listener_rule" "https_backend_host" {
     target_group_arn = aws_lb_target_group.backend.arn
   }
 }
+
+resource "aws_lb_listener_rule" "https_anniversary_path" {
+  listener_arn = aws_lb_listener.https.arn
+  priority     = 600
+
+  condition {
+    host_header {
+      values = ["anniversary.${var.domain_name}"] # Match hostname
+    }
+  }
+
+  action {
+    type             = "fixed-response"
+    fixed_response {
+      content_type = "text/html"
+      message_body = "<h1>Happy Anniversary!</h1>"
+      status_code  = "200"
+    }
+  }
+}
