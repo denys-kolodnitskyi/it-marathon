@@ -6,6 +6,7 @@ using Epam.ItMarathon.ApiService.Domain.Shared.ValidationErrors;
 using FluentValidation;
 using FluentValidation.Internal;
 using FluentValidation.Results;
+using UserEntity = Epam.ItMarathon.ApiService.Domain.Entities.User.User;
 
 namespace Epam.ItMarathon.ApiService.Domain.Aggregate.Room
 {
@@ -74,10 +75,10 @@ namespace Epam.ItMarathon.ApiService.Domain.Aggregate.Room
         /// </summary>
         public bool IsFull => Users.Count >= MaxUsersLimit;
 
-        /// <summary>
-        /// List of Users stored in Room.
-        /// </summary>
-        public IList<User> Users { get; private set; } = [];
+		/// <summary>
+		/// List of Users stored in Room.
+		/// </summary>
+		public IList<User> Users { get; private set; } = [];
 
         private Room()
         {
@@ -121,6 +122,18 @@ namespace Epam.ItMarathon.ApiService.Domain.Aggregate.Room
             var roomValidator = new RoomValidator();
             var validationResult = roomValidator.Validate(room);
             return !validationResult.IsValid ? Result.Failure<Room, ValidationResult>(validationResult) : room;
+        }
+
+		/// <summary>
+		/// Check if user is this room's admin
+		/// isAdmin field is always false (it's probably a bug)
+		/// So the identifies admn as the user with the lowest id
+		/// </summary>
+		/// <param name="user">User to check</param>
+		/// <returns>True if user is this room's admin</returns>
+		public bool IsAdmin(UserEntity user)
+        {
+            return user.Id == Users.Select(u => u.Id).Min();
         }
 
         /// <summary>
@@ -327,6 +340,39 @@ namespace Epam.ItMarathon.ApiService.Domain.Aggregate.Room
             // Call a RoomValidator to validate updated property
             return ValidateProperty(char.ToLowerInvariant(propertyName[0]) + propertyName[1..]);
         }
+
+		/// <summary>
+		/// Deletes user from a current room
+		/// </summary>
+		/// <param name="userId">User's id</param>
+		/// <returns>Returns <see cref="Room"/> encapsulated in <see cref="Result"/>.</returns>
+		public Result<Room, ValidationResult>DeleteUser(ulong? userId)
+        {
+			// Check that room is not closed
+			var roomCanBeModifiedResult = CheckRoomCanBeModified();
+			if (roomCanBeModifiedResult.IsFailure)
+			{
+				return Result.Failure<Room, ValidationResult>(roomCanBeModifiedResult.Error);
+			}
+
+            // Delete user
+            if (!roomCanBeModifiedResult.Value)
+            {
+				return Result.Failure<Room, ValidationResult>(new NotFoundError([
+	                new ValidationFailure("user.Id", "The operation cannot be completed because the room is already closed.")]));
+			}
+
+            //
+            var userToDelete = Users.FirstOrDefault(user => user.Id == userId);
+            if (userToDelete is null)
+            {
+                return Result.Failure<Room, ValidationResult>(new NotFoundError([
+                    new ValidationFailure("user.Id", "User with the specified Id was not found in the room.")]));
+            }
+
+            Users.Remove(userToDelete);
+            return this;
+		}
 
         private Result<Room, ValidationResult> ValidateProperty(string propertyName)
         {

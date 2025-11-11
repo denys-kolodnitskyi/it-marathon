@@ -26,9 +26,9 @@ namespace Epam.ItMarathon.ApiService.Application.UseCases.User.Handlers
                 return authUserResult.ConvertFailure<List<UserEntity>>();
             }
 
-            if (request.UserId is null)
+			// Get all users in room
+			if (request.UserId is null)
             {
-                // Get all users in room
                 var roomId = authUserResult.Value.RoomId;
                 var result = await userRepository.GetManyByRoomIdAsync(roomId, cancellationToken);
                 return result;
@@ -37,6 +37,7 @@ namespace Epam.ItMarathon.ApiService.Application.UseCases.User.Handlers
             // Otherwise, Get user by id
             var requestedUserResult = await userRepository.GetByIdAsync(request.UserId.Value, cancellationToken,
                 includeRoom: false, includeWishes: true);
+
             if (requestedUserResult.IsFailure)
             {
                 return requestedUserResult.ConvertFailure<List<UserEntity>>();
