@@ -1,60 +1,67 @@
 services:
-  front-angular:
-     build:
-       context: ./frontend/angular
-       dockerfile: Dockerfile
-     restart: always
-     ports:
-       - "8081:80"
-     networks:
-       - app
+  front-angular: # <-- ПЕРЕЙМЕНОВАНО (був front-react)
+    build:
+      context: ./frontend/angular
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8081:80"
+    networks:
+      - app
 
   front-react:
-     build:
-       context: ./frontend/react
-       dockerfile: Dockerfile
-     restart: always
-     ports:
-       - "8082:80"
-     networks:
-       - app
+    build:
+      context: ./frontend/react
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8082:80"
+    networks:
+      - app
+
+    # --- ДОДАНО ДЛЯ HOT-RELOAD ---
+    command: npm start #
+    volumes:
+      - ./frontend/react:/app
+      - /app/node_modules
+    # ----------------------------
 
   backend:
-     build:
-       context: ./backend/ApiService
-       dockerfile: Dockerfile
-     depends_on:
+    build:
+      context: ./backend/ApiService
+      dockerfile: Dockerfile
+    depends_on:
       db:
         condition: service_healthy
-     restart: always
-     environment:
-       ASPNETCORE_ENVIRONMENT: Development
-       ConnectionStrings__DbConnectionString: ${CONNECTIONSTRINGS__DBCONNECTIONSTRING}
-     ports:
-       - "8080:8080"
-     networks:
-       - app
+    restart: always
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__DbConnectionString: ${CONNECTIONSTRINGS__DBCONNECTIONSTRING}
+    ports:
+      - "8080:8080"
+    networks:
+      - app
 
   db:
-     image: postgres:16
-     restart: always
-     # set shared memory limit when using docker compose
-     shm_size: 128mb
-     environment:
-       POSTGRES_USER: ${PSQL_USER}
-       POSTGRES_PASSWORD: ${PSQL_PASSWORD}
-       POSTGRES_DB: ${PSQL_DB}
-     ports:
-       - "5432:5432"
-     volumes:
-       - db:/var/lib/postgresql/data
-     healthcheck:
-       test: ["CMD-SHELL", "sh -c 'pg_isready -U ${PSQL_USER} -d ${PSQL_DB}'"]
-       interval: 5s
-       timeout: 5s
-       retries: 5
-     networks:
-       - app
+    image: postgres:16
+    restart: always
+    # set shared memory limit when using docker compose
+    shm_size: 128mb
+    environment:
+      POSTGRES_USER: ${PSQL_USER}
+      POSTGRES_PASSWORD: ${PSQL_PASSWORD}
+      POSTGRES_DB: ${PSQL_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${PSQL_USER} -d ${PSQL_DB}'"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app
 
 networks:
   app:
