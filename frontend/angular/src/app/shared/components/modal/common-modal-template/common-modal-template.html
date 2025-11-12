@@ -39,13 +39,13 @@
         </div>
 
         <div class="modal__actions">
-          @if (cancelButtonText(); as text) {
-            <app-button
-              class="primary medium"
-              [text]="buttonText()"
-              (click)="onActionButtonClick()"
-            />
+          <app-button
+            class="primary medium"
+            [text]="buttonText()"
+            (click)="onActionButtonClick()"
+          />
 
+          @if (cancelButtonText(); as text) {
             <app-button
               class="secondary medium"
               [text]="text"
