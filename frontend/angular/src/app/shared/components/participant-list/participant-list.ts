@@ -18,7 +18,7 @@ export class ParticipantList {
   // === КРОК 1: ДОДАЄМО НОВИЙ INPUT ===
   // Тепер батьківський компонент (який використовує <app-participant-list>)
   // повинен передати сюди стан кімнати.
-  public readonly isRoomClosed = input<boolean>(false);
+  public readonly isRoomClosed = input.required<boolean>();
   // ===================================
 
   @HostBinding('class.non-admin-list')
@@ -34,7 +34,7 @@ export class ParticipantList {
     const isClosed = this.isRoomClosed(); // Використовуємо наш новий input
 
     // Ваша логіка:
-    return userCount <= 4 || isClosed;
+    return userCount <= 1 || isClosed;
   });
   // ======================================
 
