@@ -6,7 +6,7 @@ import {
   inject,
   input,
 } from '@angular/core';
-import { tap } from 'rxjs';
+import { tap, take } from 'rxjs'; // 'take' тут вже не потрібен, але хай буде
 
 import { IconButton } from '../icon-button/icon-button';
 import {
@@ -25,6 +25,8 @@ import { ModalService } from '../../../core/services/modal';
 import { getPersonalInfo } from '../../../utils/get-personal-info';
 import { UserService } from '../../../room/services/user';
 import type { User } from '../../../app.models';
+
+import { DeleteParticipantModal } from '../delete-participant-modal/delete-participant-modal';
 
 @Component({
   selector: 'li[app-participant-card]',
@@ -59,9 +61,13 @@ export class ParticipantCard {
   public readonly iconInfo = IconName.Info;
   public readonly ariaLabelInfo = AriaLabel.Info;
 
+  public readonly iconDelete = IconName.Close;
+  public readonly ariaLabelDelete = AriaLabel.DeleteParticipant;
+
   @HostBinding('tabindex') tab = 0;
   @HostBinding('class.list-row') rowClass = true;
 
+  // ... (copyRoomLink, onCopyHover, onCopyLeave - залишаються без змін) ...
   public async copyRoomLink(): Promise<void> {
     const host = this.#host.nativeElement;
     const code = this.participant().userCode;
@@ -73,7 +79,6 @@ export class ParticipantCard {
         { message: PersonalLink.Error, type: MessageType.Error },
         false
       );
-
       return;
     }
 
@@ -97,11 +102,26 @@ export class ParticipantCard {
   public onInfoClick(): void {
     if (!this.participant().isAdmin) {
       this.#openModal();
-
       return;
     }
-
     this.#showPopup();
+  }
+
+  public onDeleteParticipantClick(participant: User): void {
+    const modalInputs = {
+      participantName: participant.firstName,
+    };
+
+    const modalOutputs = {
+      closeModal: () => this.#modalService.close(),
+      buttonAction: () => this.#handleDeleteConfirm(),
+    };
+
+    this.#modalService.openWithResult(
+      DeleteParticipantModal,
+      modalInputs,
+      modalOutputs
+    );
   }
 
   public onCopyHover(target: EventTarget | null): void {
@@ -121,7 +141,21 @@ export class ParticipantCard {
     }
   }
 
+  // === КРОК 3: ОНОВЛЕНИЙ МЕТОД (тільки console.log) ===
+  #handleDeleteConfirm(): void {
+    const participantId = this.participant().id;
+    const participantName = this.participant().firstName;
+
+    console.log(
+      `[DELETE CONFIRMED] User: ${participantName}, ID: ${participantId}`
+    );
+
+    // Імітуємо успішну операцію і закриваємо модалку
+    this.#modalService.close();
+  }
+
   #openModal(): void {
+    // ... (код для info-модалки, як і був)
     const personalInfo = getPersonalInfo(this.participant());
     const roomLink = this.#urlService.getNavigationLinks(
       this.participant().userCode || '',
@@ -148,6 +182,7 @@ export class ParticipantCard {
   }
 
   #showPopup(): void {
+    // ... (код для info-popup, як і був)
     const { email, phone } = this.participant();
     const container = this.#host.nativeElement.closest(
       'app-participant-list'

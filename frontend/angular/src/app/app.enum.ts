@@ -31,6 +31,7 @@ export const enum AriaLabel {
   Close = 'Close',
   ParticipantLink = 'Copy personal link',
   Info = 'Info',
+  DeleteParticipant = 'Delete participant',
 }
 
 export const enum InputSidebarText {
@@ -164,6 +165,7 @@ export const enum ButtonText {
   ViewWishlist = 'View Wishlist',
   Cancel = 'Cancel',
   ViewInformation = 'View Information',
+  Delete = 'Delete',
 }
 
 export const enum ButtonType {
@@ -292,6 +294,7 @@ export const enum ModalTitle {
   ParticipantDetails = 'Participant Details',
   PersonalInformation = 'Personal Information',
   Invitation = 'Invite New Members',
+  RemoveParticipant = 'Remove a participant',
 }
 
 export const enum ModalSubtitle {

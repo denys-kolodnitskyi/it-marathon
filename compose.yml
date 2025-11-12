@@ -1,5 +1,5 @@
 services:
-  front-angular: # <-- ПЕРЕЙМЕНОВАНО (був front-react)
+  front-angular:
     build:
       context: ./frontend/angular
       dockerfile: Dockerfile
@@ -18,13 +18,6 @@ services:
       - "8082:80"
     networks:
       - app
-
-    # --- ДОДАНО ДЛЯ HOT-RELOAD ---
-    command: npm start #
-    volumes:
-      - ./frontend/react:/app
-      - /app/node_modules
-    # ----------------------------
 
   backend:
     build:
@@ -45,7 +38,6 @@ services:
   db:
     image: postgres:16
     restart: always
-    # set shared memory limit when using docker compose
     shm_size: 128mb
     environment:
       POSTGRES_USER: ${PSQL_USER}

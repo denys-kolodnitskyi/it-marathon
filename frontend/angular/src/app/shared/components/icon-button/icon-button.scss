@@ -24,6 +24,26 @@
       }
     }
   }
+
+  &--danger {
+    .button {
+      fill: color.$icon-button-bg--danger;
+
+      &:hover,
+      &:focus-visible {
+        fill: color.$icon-button-bg--danger-hover;
+      }
+
+      &:active {
+        fill: color.$icon-button-bg--danger-active;
+      }
+
+      &:disabled {
+        fill: color.$icon-button-bg--disabled;
+        cursor: not-allowed;
+      }
+    }
+  }
 }
 
 .button {

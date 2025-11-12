@@ -1,0 +1,19 @@
+<!-- 
+  Тепер ми передаємо ВСІ обов'язкові інпути.
+  CommonModalTemplate сам намалює обидві кнопки.
+-->
+<app-common-modal-template
+  [headerPictureName]="headerPictureName"
+  [headerTitle]="title"
+  [subtitle]="message()"
+  [buttonText]="buttonText"
+  (buttonAction)="onButtonAction()"
+  [cancelButtonText]="cancelButtonText"
+  (cancelButtonAction)="onCloseModal()"
+  (closeModal)="onCloseModal()"
+>
+  <!-- 
+    Контент (ng-content) тепер порожній,
+    бо нам не потрібні кастомні кнопки.
+  -->
+</app-common-modal-template>

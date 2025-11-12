@@ -18,6 +18,7 @@ import { MyWishlistModal } from './room/components/my-wishlist/components/my-wis
 import { PersonalInfoModal } from './room/components/personal-info-modal/personal-info-modal';
 import { InvitationModal } from './shared/components/invitation-modal/invitation-modal';
 import { ParticipantInfoModal } from './room/components/participant-info-modal/participant-info-modal';
+import { DeleteParticipantModal } from './shared/components/delete-participant-modal/delete-participant-modal';
 
 export interface StepperItem {
   isActive: boolean;
@@ -167,11 +168,17 @@ export interface ModalEntry {
 
 export type ModalEntryNullable = ModalEntry | null;
 
+// ---
+// === КРОК 1: Я ДОДАВ 'DeleteParticipantModalInputs' ДО ЦЬОГО СПИСКУ ===
+// (Я також додав ParticipantInfoModalInputs, тому що він був відсутній)
+// ---
 export type ModalInputs =
   | GifteeInfoModalInputs
   | MyWishlistModalInputs
   | PersonalInfoModalInputs
-  | InvitationModalInputs;
+  | InvitationModalInputs
+  | ParticipantInfoModalInputs // <-- Відсутній Input (ймовірно, для ParticipantInfoModal)
+  | DeleteParticipantModalInputs; // <-- ВАШ ВІДСУТНІЙ INPUT
 
 export type ModalOutputs = Record<string, (...args: unknown[]) => void>;
 
@@ -181,6 +188,7 @@ export type ModalComponentType = Type<
   | PersonalInfoModal
   | InvitationModal
   | ParticipantInfoModal
+  | DeleteParticipantModal
 >;
 
 export interface GifteePersonalInfoItem {
@@ -206,10 +214,24 @@ export interface MyWishlistModalInputs {
 export interface PersonalInfoModalInputs {
   personalInfo: GifteePersonalInfoItem[];
 }
+
+// ---
+// === КРОК 2: Я ВИЗНАЧИВ ВІДСУТНІЙ 'ParticipantInfoModalInputs' ===
+// (Виходячи з нашої попередньої помилки, він очікує 'personalInfo' та 'roomLink')
+// ---
+export interface ParticipantInfoModalInputs {
+  personalInfo: GifteePersonalInfoItem[];
+  roomLink: string;
+}
+
 export interface InvitationModalInputs {
   roomLink: string;
   invitationNote: string;
   userCode: string;
+}
+
+export interface DeleteParticipantModalInputs {
+  participantName: string;
 }
 
 export interface LottieConfig {

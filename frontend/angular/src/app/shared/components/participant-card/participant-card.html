@@ -33,5 +33,12 @@
       [ariaLabel]="ariaLabelInfo"
       (click)="onInfoClick()"
     />
+
+    <app-icon-button
+      class="button--danger"
+      [iconName]="iconDelete"
+      [ariaLabel]="ariaLabelDelete"
+      (click)="onDeleteParticipantClick(participant())"
+    />
   }
 </span>
