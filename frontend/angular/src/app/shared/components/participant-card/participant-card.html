@@ -38,7 +38,8 @@
       class="button--danger"
       [iconName]="iconDelete"
       [ariaLabel]="ariaLabelDelete"
-      (click)="onDeleteParticipantClick(participant())"
+      (click)="onDeleteParticipantClick()"
+      [isButtonDisabled]="isDeleteDisabled()"
     />
   }
 </span>
