@@ -1,5 +1,5 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, take } from 'rxjs'; // Додано 'take'
 import { HttpResponse } from '@angular/common/http';
 
 import { ApiService } from '../../core/services/api';
@@ -53,6 +53,47 @@ export class UserService {
             ToastMessage.SuccessDrawNames,
             MessageType.Success
           );
+        }
+      })
+    );
+  }
+
+  // ===
+  // === НОВИЙ МЕТОД ДЛЯ ВИДАЛЕННЯ ===
+  // ===
+  /**
+   * Видаляє учасника з кімнати.
+   * @param userId ID користувача, якого потрібно видалити.
+   */
+  public deleteUser(userId: number): Observable<HttpResponse<any>> {
+    const adminUserCode = this.#userCode(); // Отримуємо код адміна
+
+    if (!adminUserCode) {
+      // Обробка помилки, якщо код адміна невідомий
+      return new Observable((subscriber) => {
+        subscriber.error(
+          new HttpResponse({
+            status: 401,
+            statusText: 'Admin user code is missing',
+          })
+        );
+      });
+    }
+
+    // Припускаємо, що ваш ApiService має метод 'deleteUser'
+    return this.#apiService.deleteUser(userId, adminUserCode).pipe(
+      tap((response) => {
+        // Припускаємо, що 200 (OK) або 204 (No Content) - це успіх
+        if (response.status === 200 || response.status === 204) {
+          // 1. Показати сповіщення про успіх
+          this.#toasterService.show(
+            ToastMessage.SuccessDeleteUser, // <-- Вам потрібно додати це в app.enum.ts
+            MessageType.Success
+          );
+
+          // 2. Оновити список користувачів (щоб він зник з UI)
+          // Викликаємо getUsers(), який оновить сигнал #users
+          this.getUsers().pipe(take(1)).subscribe();
         }
       })
     );

@@ -97,4 +97,30 @@ export class ApiService {
       { params, observe: 'response' }
     );
   }
+
+  // ===
+  // === ОСЬ НОВИЙ МЕТОД ДЛЯ ВИДАЛЕННЯ ===
+  // ===
+  /**
+   * Надсилає DELETE-запит на API для видалення користувача.
+   * @param userId ID користувача для видалення
+   * @param userCode Код адміна для авторизації (передається як query-параметр)
+   */
+  public deleteUser(
+    userId: number,
+    userCode: string
+  ): Observable<HttpResponse<any>> {
+    // Створюємо query-параметр 'userCode'
+    const params = new HttpParams().set('userCode', userCode);
+
+    // Формуємо URL: /api/users/{id}
+    // (Припускаємо, що ваш Endpoint.users - це '/users')
+    const url = `${this.#baseUrl}${Endpoint.users}/${userId}`;
+
+    // Надсилаємо DELETE-запит з query-параметром
+    return this.#http.delete(url, {
+      params,
+      observe: 'response', // Отримуємо повний HttpResponse
+    });
+  }
 }
