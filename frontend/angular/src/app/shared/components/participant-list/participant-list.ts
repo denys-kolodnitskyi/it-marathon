@@ -34,7 +34,7 @@ export class ParticipantList {
     const isClosed = this.isRoomClosed(); // Використовуємо наш новий input
 
     // Ваша логіка:
-    return userCount <= 1 || isClosed;
+    return userCount <= 3 || isClosed;
   });
   // ======================================
 
