@@ -29,13 +29,10 @@ export class DeleteParticipantModal {
   // === ДАНІ ДЛЯ CommonModalTemplate ===
 
   // 1. Обов'язковий Input (я припускаю, що у вас є такий PictureName)
-  public readonly headerPictureName = PictureName.StNick; // <-- ПЕРЕВІРТЕ ЦЕЙ ENUM
+  public readonly headerPictureName = PictureName.Cookie; // <-- ПЕРЕВІРТЕ ЦЕЙ ENUM
 
   // 2. Обов'язковий Input (головна кнопка)
   public readonly buttonText = ButtonText.Delete; // <-- Додайте 'Delete' у ваш ButtonText enum
-
-  // // 3. (Моє припущення) Клас для головної кнопки, щоб зробити її червоною
-  // public readonly buttonClass = 'danger medium'; // <-- Припускаю, що 'danger' існує
 
   // 4. Input для кнопки "Cancel"
   public readonly cancelButtonText = ButtonText.Cancel; // <-- Додайте 'Cancel' у ваш ButtonText enum
@@ -44,7 +41,7 @@ export class DeleteParticipantModal {
   public readonly title = ModalTitle.RemoveParticipant; // <-- Додайте 'Remove a participant' в enum
   public readonly message = computed(
     () =>
-      `Are you sure you want to permanently delete ${this.participantName()}? This action cannot be undone.`
+      `Are you sure you want to remove <b>${this.participantName()}</b> from the game? This action cannot be undone.`
   );
   // ======================================
 

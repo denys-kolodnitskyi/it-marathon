@@ -16,7 +16,7 @@
 
         <div class="modal__header-text">
           <h3 class="modal__title">{{ headerTitle() }}</h3>
-          <p class="modal__subtitle">{{ subtitle() }}</p>
+          <p class="modal__subtitle" [innerHTML]="subtitle()"></p>
 
           @if (isBudgetShown()) {
             <p class="modal__budget title-sm">
@@ -41,17 +41,17 @@
         <div class="modal__actions">
           @if (cancelButtonText(); as text) {
             <app-button
+              class="primary medium"
+              [text]="buttonText()"
+              (click)="onActionButtonClick()"
+            />
+
+            <app-button
               class="secondary medium"
               [text]="text"
               (click)="onCancelButtonClick()"
             />
           }
-
-          <app-button
-            class="primary medium"
-            [text]="buttonText()"
-            (click)="onActionButtonClick()"
-          />
         </div>
       </div>
     </section>

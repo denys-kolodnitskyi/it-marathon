@@ -109,7 +109,7 @@ export class ParticipantCard {
 
   public onDeleteParticipantClick(participant: User): void {
     const modalInputs = {
-      participantName: participant.firstName,
+      participantName: `${participant.firstName} ${participant.lastName}`,
     };
 
     const modalOutputs = {
