@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router";
 import Loader from "@components/common/loader/Loader";
 import { useFetch } from "@hooks/useFetch";
-import type { GetRoomResponse } from "@types/api";
+import type { GetRoomResponse } from "@app-types/api";
 import { BASE_API_URL } from "@utils/general";
 import useToaster from "@hooks/useToaster";
 import JoinRoomPageContent from "./join-room-page-content/JoinRoomPageContent";

@@ -7,7 +7,7 @@ import {
   type FieldValidation,
   type InputName,
   type ValidationErrors,
-} from "@types/general";
+} from "@app-types/general";
 import type { DetailsFormInputName } from "../../components/common/details-form/types";
 import {
   CREATE_ROOM_FORM_VALIDATION_KEYS,

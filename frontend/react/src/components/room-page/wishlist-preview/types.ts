@@ -1,4 +1,4 @@
-import type { WishList } from "@types/api";
+import type { WishList } from "@app-types/api";
 
 export interface WishlistPreviewProps {
   isWantSurprise?: boolean;

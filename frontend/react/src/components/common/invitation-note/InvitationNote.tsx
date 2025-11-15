@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router";
-import type { UpdateRoomResponse, UpdateRoomRequest } from "@types/api.ts";
+import type { UpdateRoomResponse, UpdateRoomRequest } from "@app-types/api.ts";
 import Input from "../input/Input";
 import CopyButton from "../copy-button/CopyButton";
 import IconButton from "../icon-button/IconButton";
@@ -9,7 +9,7 @@ import { NOTE_MAX_LENGTH } from "./utils";
 import { useFetch } from "@hooks/useFetch";
 import useToaster from "@hooks/useToaster.ts";
 import { BASE_API_URL } from "@utils/general.ts";
-import type { InputChangeEvent, InputChangeHandler } from "@types/general";
+import type { InputChangeEvent, InputChangeHandler } from "@app-types/general";
 import type { InvitationNoteProps } from "./types";
 import "./InvitationNote.scss";
 

@@ -1,3 +1,4 @@
+import type { InputName } from "@app-types/general";
 import { DetailsFormInputNames } from "../../components/common/details-form/types";
 import { CreateRoomFormInputNames } from "@components/create-room-page/create-room-form/types";
 
@@ -9,4 +10,4 @@ export const DETAILS_FORM_VALIDATION_KEYS = [
   DetailsFormInputNames.EMAIL,
 ];
 
-export const OPTIONAL_FIELDS = [DetailsFormInputNames.EMAIL];
+export const OPTIONAL_FIELDS: InputName[] = [DetailsFormInputNames.EMAIL];

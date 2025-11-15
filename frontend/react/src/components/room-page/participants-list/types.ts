@@ -1,4 +1,4 @@
-import type { GetParticipantsResponse } from "@app-types/api.ts";
+import type { GetParticipantsResponse } from "@app-types/api";
 
 export interface ParticipantsListProps {
   isRoomClosed?: boolean;

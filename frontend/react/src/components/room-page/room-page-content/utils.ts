@@ -1,4 +1,4 @@
-import type { Participant } from "@types/api";
+import type { Participant } from "@app-types/api";
 
 export const getCurrentUser = (
   userCode: string,

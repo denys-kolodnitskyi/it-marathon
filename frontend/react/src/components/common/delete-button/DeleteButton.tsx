@@ -1,4 +1,3 @@
-// 1. Updated import path from '@components' to relative '../'
 import IconButton from "../icon-button/IconButton";
 import type { DeleteButtonProps } from "./types";
 import "./DeleteButton.scss";

@@ -1,5 +1,5 @@
 import type { ChangeEvent } from "react";
-import { DetailsFormInputNames } from "../components/common/details-form/types";
+import { DetailsFormInputNames } from "src/components/common/details-form/types";
 import { CreateRoomFormInputNames } from "../components/create-room-page/create-room-form/types";
 
 export type InputChangeEvent = ChangeEvent<
