@@ -29,7 +29,7 @@
       "@components/*": ["src/components/*"],
       "@assets/*": ["src/assets/*"],
       "@hooks/*": ["src/hooks/*"],
-      "@types/*": ["src/types/*"],
+      "@app-types/*": ["src/types/*"],
       "@utils/*": ["src/utils/*"]
     }
   },

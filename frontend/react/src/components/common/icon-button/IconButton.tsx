@@ -1,11 +1,12 @@
-import type { IconButtonProps } from "./types.ts";
-import { ICONS_PATH } from "./utils.ts";
+import type { IconButtonProps } from "./types";
+import { ICONS_PATH } from "./utils";
 import "./IconButton.scss";
 
 const IconButton = ({
   iconName,
   color = "green",
   onClick,
+  isDisabled = false,
   ...restProps
 }: IconButtonProps) => {
   return (
@@ -13,6 +14,7 @@ const IconButton = ({
       className={`icon-button icon-button--${color}`}
       onClick={onClick}
       type="button"
+      disabled={isDisabled}
       {...restProps}
     >
       <svg className="icon-button__icon">

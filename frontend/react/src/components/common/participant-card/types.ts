@@ -6,5 +6,7 @@ export interface ParticipantCardProps {
   isCurrentUserAdmin?: boolean;
   adminInfo?: string;
   participantLink?: string;
+  isRoomClosed?: boolean;
+  participantsCount?: number;
   onInfoButtonClick?: () => void;
 }

@@ -5,6 +5,8 @@
   background: transparent;
   cursor: pointer;
 
+  transition: fill 0.25s ease-in-out;
+
   &--green,
   &--white {
     &:focus-visible {
@@ -44,6 +46,23 @@
 
     &:active {
       fill: colors.$g-100;
+    }
+
+    &:disabled {
+      fill: colors.$g-600;
+    }
+  }
+
+  &--red {
+    fill: colors.$red-500;
+
+    &:hover,
+    &:focus-visible {
+      fill: colors.$red-300;
+    }
+
+    &:active {
+      fill: colors.$red-500;
     }
 
     &:disabled {

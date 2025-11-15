@@ -3,6 +3,7 @@ import InfoButton from "../info-button/InfoButton";
 import ItemCard from "../item-card/ItemCard";
 import { type ParticipantCardProps } from "./types";
 import "./ParticipantCard.scss";
+import DeleteButton from "../delete-button/DeleteButton";
 
 const ParticipantCard = ({
   firstName,
@@ -12,6 +13,8 @@ const ParticipantCard = ({
   isCurrentUserAdmin = false,
   adminInfo = "",
   participantLink = "",
+  isRoomClosed = false,
+  participantsCount = 0,
   onInfoButtonClick,
 }: ParticipantCardProps) => {
   return (
@@ -23,7 +26,7 @@ const ParticipantCard = ({
           <p className="participant-card-role">Admin</p>
         ) : null}
 
-        {isCurrentUserAdmin ? (
+        {isCurrentUserAdmin && !isCurrentUser ? (
           <CopyButton
             textToCopy={participantLink}
             iconName="link"
@@ -38,6 +41,13 @@ const ParticipantCard = ({
 
         {!isCurrentUser && isAdmin ? (
           <InfoButton infoMessage={adminInfo} />
+        ) : null}
+
+        {isCurrentUserAdmin && !isAdmin ? (
+          <DeleteButton
+            isDisabled={isRoomClosed || participantsCount <= 3}
+            onClick={() => {}}
+          />
         ) : null}
       </div>
     </ItemCard>

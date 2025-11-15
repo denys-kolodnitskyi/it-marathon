@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useParams } from "react-router";
 import ParticipantCard from "@components/common/participant-card/ParticipantCard";
 import ParticipantDetailsModal from "@components/common/modals/participant-details-modal/ParticipantDetailsModal";
-import type { Participant } from "@types/api";
+import type { Participant } from "@app-types/api";
 import {
   MAX_PARTICIPANTS_NUMBER,
   generateParticipantLink,
@@ -10,7 +10,10 @@ import {
 import { type ParticipantsListProps, type PersonalInformation } from "./types";
 import "./ParticipantsList.scss";
 
-const ParticipantsList = ({ participants }: ParticipantsListProps) => {
+const ParticipantsList = ({
+  isRoomClosed,
+  participants,
+}: ParticipantsListProps) => {
   const { userCode } = useParams();
   const [selectedParticipant, setSelectedParticipant] =
     useState<PersonalInformation | null>(null);
@@ -74,6 +77,8 @@ const ParticipantsList = ({ participants }: ParticipantsListProps) => {
               key={user?.id}
               firstName={user?.firstName}
               lastName={user?.lastName}
+              participantsCount={participants.length}
+              isRoomClosed={isRoomClosed}
               isCurrentUser={userCode === user?.userCode}
               isCurrentUserAdmin={userCode === admin?.userCode}
               participantLink={generateParticipantLink(user?.userCode)}

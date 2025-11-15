@@ -102,7 +102,10 @@ const RoomPageContent = ({
       </div>
 
       <div className="room-page-content-row">
-        <ParticipantsList participants={participants} />
+        <ParticipantsList
+          isRoomClosed={isRandomized}
+          participants={participants}
+        />
 
         <div className="room-page-content-column">
           {isAdmin || (!isAdmin && isRandomized) ? (
