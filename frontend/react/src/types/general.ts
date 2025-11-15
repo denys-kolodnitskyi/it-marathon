@@ -1,6 +1,6 @@
 import type { ChangeEvent } from "react";
-import { DetailsFormInputNames } from "src/components/common/details-form/types";
-import { CreateRoomFormInputNames } from "../components/create-room-page/create-room-form/types";
+import { DetailsFormInputNames } from "../components/common/details-form/types.ts";
+import { CreateRoomFormInputNames } from "../components/create-room-page/create-room-form/types.ts";
 
 export type InputChangeEvent = ChangeEvent<
   HTMLInputElement | HTMLTextAreaElement

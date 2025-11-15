@@ -20,6 +20,7 @@ const RoomPageContent = ({
   participants,
   roomDetails,
   onDrawNames,
+  onDeletedParticipant,
 }: RoomPageContentProps) => {
   const { userCode } = useParams();
   const [isUserDetailsModalOpen, setIsUserDetailsModalOpen] = useState(false);
@@ -105,6 +106,7 @@ const RoomPageContent = ({
         <ParticipantsList
           isRoomClosed={isRandomized}
           participants={participants}
+          onDeletedParticipant={onDeletedParticipant}
         />
 
         <div className="room-page-content-column">

@@ -87,6 +87,10 @@ const RoomPage = () => {
         participants={participants ?? []}
         roomDetails={roomDetails ?? ({} as GetRoomResponse)}
         onDrawNames={() => fetchRandomize()}
+        onDeletedParticipant={() => {
+          fetchParticipants();
+          fetchRoomDetails();
+        }}
       />
     </main>
   );

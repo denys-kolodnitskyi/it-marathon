@@ -13,6 +13,7 @@ import "./ParticipantsList.scss";
 const ParticipantsList = ({
   isRoomClosed,
   participants,
+  onDeletedParticipant,
 }: ParticipantsListProps) => {
   const { userCode } = useParams();
   const [selectedParticipant, setSelectedParticipant] =
@@ -68,7 +69,10 @@ const ParticipantsList = ({
               isAdmin={admin?.isAdmin}
               isCurrentUserAdmin={userCode === admin?.userCode}
               adminInfo={`${admin?.phone}${admin?.email ? `\n${admin?.email}` : ""}`}
+              userId={admin?.id}
+              userCode={userCode}
               participantLink={generateParticipantLink(admin?.userCode)}
+              onDeletedParticipant={onDeletedParticipant}
             />
           ) : null}
 
@@ -82,11 +86,14 @@ const ParticipantsList = ({
               isCurrentUser={userCode === user?.userCode}
               isCurrentUserAdmin={userCode === admin?.userCode}
               participantLink={generateParticipantLink(user?.userCode)}
+              userId={user?.id}
+              userCode={userCode}
               onInfoButtonClick={
                 userCode === admin?.userCode && userCode !== user?.userCode
                   ? () => handleInfoButtonClick(user)
                   : undefined
               }
+              onDeletedParticipant={onDeletedParticipant}
             />
           ))}
         </div>

@@ -1,11 +1,13 @@
 import CopyButton from "../copy-button/CopyButton";
 import InfoButton from "../info-button/InfoButton";
 import ItemCard from "../item-card/ItemCard";
-import { type ParticipantCardProps } from "./types";
+import { type DeleteUserResponse, type ParticipantCardProps } from "./types";
 import "./ParticipantCard.scss";
 import DeleteButton from "../delete-button/DeleteButton";
 import { useState } from "react";
 import RemovalModal from "../modals/removal-modal/RemovalModal";
+import { BASE_API_URL } from "@utils/general";
+import { useFetch } from "@hooks/useFetch";
 
 const ParticipantCard = ({
   firstName,
@@ -17,14 +19,36 @@ const ParticipantCard = ({
   participantLink = "",
   isRoomClosed = false,
   participantsCount = 0,
+  userId,
+  userCode,
   onInfoButtonClick,
+  onDeletedParticipant,
 }: ParticipantCardProps) => {
   const [isRemovalModalOpen, setIsRemovalModalOpen] = useState(false);
 
   const openRemovalModal = () => setIsRemovalModalOpen(true);
   const closeRemovalModal = () => setIsRemovalModalOpen(false);
 
+  const deleteUrl = `${BASE_API_URL}/api/users/${userId}?userCode=${userCode}`;
+
+  const deleteUser = useFetch<DeleteUserResponse, undefined>(
+    {
+      url: deleteUrl,
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      onSuccess: () => {
+        closeRemovalModal();
+      },
+      onError: () => {
+        closeRemovalModal();
+      },
+    },
+    false,
+  );
+
   const handleRemoveConfirm = () => {
+    deleteUser.fetchData(undefined);
+    onDeletedParticipant?.();
     closeRemovalModal();
   };
 
