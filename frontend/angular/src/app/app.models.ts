@@ -168,17 +168,13 @@ export interface ModalEntry {
 
 export type ModalEntryNullable = ModalEntry | null;
 
-// ---
-// === КРОК 1: Я ДОДАВ 'DeleteParticipantModalInputs' ДО ЦЬОГО СПИСКУ ===
-// (Я також додав ParticipantInfoModalInputs, тому що він був відсутній)
-// ---
 export type ModalInputs =
   | GifteeInfoModalInputs
   | MyWishlistModalInputs
   | PersonalInfoModalInputs
   | InvitationModalInputs
-  | ParticipantInfoModalInputs // <-- Відсутній Input (ймовірно, для ParticipantInfoModal)
-  | DeleteParticipantModalInputs; // <-- ВАШ ВІДСУТНІЙ INPUT
+  | ParticipantInfoModalInputs
+  | DeleteParticipantModalInputs;
 
 export type ModalOutputs = Record<string, (...args: unknown[]) => void>;
 
@@ -215,10 +211,6 @@ export interface PersonalInfoModalInputs {
   personalInfo: GifteePersonalInfoItem[];
 }
 
-// ---
-// === КРОК 2: Я ВИЗНАЧИВ ВІДСУТНІЙ 'ParticipantInfoModalInputs' ===
-// (Виходячи з нашої попередньої помилки, він очікує 'personalInfo' та 'roomLink')
-// ---
 export interface ParticipantInfoModalInputs {
   personalInfo: GifteePersonalInfoItem[];
   roomLink: string;

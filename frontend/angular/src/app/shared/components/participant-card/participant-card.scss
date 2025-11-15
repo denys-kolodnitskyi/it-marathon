@@ -18,7 +18,7 @@
   flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
-  gap: 8px; // <--- ДОДАНО: Створює 8px простору між кнопками
+  gap: 8px;
 
   .pill {
     font-size: 14px;
@@ -35,10 +35,10 @@
       content: '';
       position: absolute;
       top: 50%;
-      left: -4px; // <--- Тепер це ідеально центрує розділювач у 8px gap
+      left: -4px;
       transform: translateY(-50%);
       width: 1px;
-      height: 24px; // <--- ЗМІНЕНО: Робить розділювач охайнішим
+      height: 24px;
       background-color: $pl-li-divider-color;
     }
   }

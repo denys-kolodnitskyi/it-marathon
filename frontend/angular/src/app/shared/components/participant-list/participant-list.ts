@@ -15,11 +15,7 @@ export class ParticipantList {
   public readonly isAdmin = input<boolean>(false);
   public readonly userCode = input<string>('');
 
-  // === КРОК 1: ДОДАЄМО НОВИЙ INPUT ===
-  // Тепер батьківський компонент (який використовує <app-participant-list>)
-  // повинен передати сюди стан кімнати.
   public readonly isRoomClosed = input.required<boolean>();
-  // ===================================
 
   @HostBinding('class.non-admin-list')
   get adminClass(): boolean {
@@ -28,15 +24,12 @@ export class ParticipantList {
 
   currentCount = computed(() => this.participants().length);
 
-  // === КРОК 2: ОБЧИСЛЮЄМО ЛОГІКУ КНОПКИ ===
   public readonly isDeleteDisabled = computed(() => {
-    const userCount = this.currentCount(); // Використовуємо ваш існуючий computed
-    const isClosed = this.isRoomClosed(); // Використовуємо наш новий input
+    const userCount = this.currentCount();
+    const isClosed = this.isRoomClosed();
 
-    // Ваша логіка:
     return userCount <= 3 || isClosed;
   });
-  // ======================================
 
   sortedParticipants = computed(() => {
     return [...this.participants()].sort(

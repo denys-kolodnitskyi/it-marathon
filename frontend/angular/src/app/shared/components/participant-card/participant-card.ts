@@ -6,7 +6,7 @@ import {
   inject,
   input,
 } from '@angular/core';
-import { tap, take } from 'rxjs'; // Додано 'take'
+import { tap, take } from 'rxjs';
 
 import { IconButton } from '../icon-button/icon-button';
 import {
@@ -21,39 +21,33 @@ import { PopupService } from '../../../core/services/popup';
 import { copyToClipboard } from '../../../utils/copy';
 import { UrlService } from '../../../core/services/url';
 import { ParticipantInfoModal } from '../../../room/components/participant-info-modal/participant-info-modal';
-// === Імпорт нашого нового модального вікна ===
 import { DeleteParticipantModal } from '../delete-participant-modal/delete-participant-modal';
 import { ModalService } from '../../../core/services/modal';
 import { getPersonalInfo } from '../../../utils/get-personal-info';
 import { UserService } from '../../../room/services/user';
-import type { User, DeleteParticipantModalInputs } from '../../../app.models'; // Додано DeleteParticipantModalInputs
+import type { User, DeleteParticipantModalInputs } from '../../../app.models';
 
 @Component({
   selector: 'li[app-participant-card]',
-  imports: [IconButton], // Модалки тут не потрібні, їх викликає сервіс
-  standalone: true, // Переконайтеся, що ваші компоненти standalone
+  imports: [IconButton],
+  standalone: true,
   templateUrl: './participant-card.html',
   styleUrl: './participant-card.scss',
 })
 export class ParticipantCard {
-  // === ВХІДНІ ДАНІ (INPUTS) ===
   readonly participant = input.required<User>();
   readonly isCurrentUserAdmin = input.required<boolean>();
   readonly showCopyIcon = input<boolean>(false);
   readonly userCode = input<string>('');
 
-  // --- НОВИЙ INPUT ДЛЯ ДЕАКТИВАЦІЇ КНОПКИ ---
   readonly isDeleteDisabled = input<boolean>(false);
-  // -----------------------------------------
 
-  // === СЕРВІСИ (INJECTS) ===
   readonly #popup = inject(PopupService);
   readonly #urlService = inject(UrlService);
   readonly #host = inject(ElementRef<HTMLElement>);
   readonly #modalService = inject(ModalService);
   readonly #userService = inject(UserService);
 
-  // === ОБЧИСЛЮВАНІ ЗНАЧЕННЯ (COMPUTED) ===
   public readonly isCurrentUser = computed(() => {
     const code = this.userCode();
     return !!code && this.participant()?.userCode === code;
@@ -62,18 +56,15 @@ export class ParticipantCard {
     () => `${this.participant().firstName} ${this.participant().lastName}`
   );
 
-  // === НАЛАШТУВАННЯ ІКОНОК ===
   public readonly iconCopy = IconName.Link;
   public readonly ariaLabelCopy = AriaLabel.ParticipantLink;
   public readonly iconInfo = IconName.Info;
   public readonly ariaLabelInfo = AriaLabel.Info;
-  public readonly iconDelete = IconName.Close; // Або IconName.Delete
+  public readonly iconDelete = IconName.Close;
   public readonly ariaLabelDelete = AriaLabel.DeleteParticipant;
 
   @HostBinding('tabindex') tab = 0;
   @HostBinding('class.list-row') rowClass = true;
-
-  // === МЕТОДИ ДЛЯ ІКОНОК ===
 
   public async copyRoomLink(): Promise<void> {
     const host = this.#host.nativeElement;
@@ -114,21 +105,16 @@ export class ParticipantCard {
     this.#showPopup();
   }
 
-  // --- ФІНАЛЬНА ЛОГІКА КНОПКИ ВИДАЛЕННЯ ---
   public onDeleteParticipantClick(): void {
     const modalInputs: DeleteParticipantModalInputs = {
       participantName: this.fullName(),
     };
 
-    // 1. Відкриваємо модалку
     this.#modalService.openWithResult(DeleteParticipantModal, modalInputs, {
-      // 2. Передаємо функцію, яка виконається при натисканні "Delete"
       buttonAction: () => this.#handleDeleteConfirm(),
-      // 3. Передаємо функцію, яка виконається при натисканні "Cancel"
       closeModal: () => this.#modalService.close(),
     });
   }
-  // ----------------------------------------
 
   public onCopyHover(target: EventTarget | null): void {
     if (target instanceof HTMLElement) {
@@ -146,8 +132,6 @@ export class ParticipantCard {
       this.#popup.hide(target);
     }
   }
-
-  // === ПРИВАТНІ МЕТОДИ ===
 
   #openModal(): void {
     const personalInfo = getPersonalInfo(this.participant());
@@ -196,30 +180,20 @@ export class ParticipantCard {
     );
   }
 
-  // --- ЛОГІКА ОБРОБКИ ПІДТВЕРДЖЕННЯ ВИДАЛЕННЯ ---
   #handleDeleteConfirm(): void {
     const participantId = this.participant().id;
 
-    // Викликаємо сервіс, який ми додали
     this.#userService
       .deleteUser(participantId)
-      .pipe(
-        take(1) // Важливо: відписуємося після першої відповіді
-      )
+      .pipe(take(1))
       .subscribe({
         next: () => {
-          // Успіх! Сервіс сам оновить список користувачів і покаже toast.
-          // Нам потрібно лише закрити модалку.
           this.#modalService.close();
         },
         error: (err: any) => {
-          // Бекенд відхилив запит (напр. 400 Bad Request)
           console.error('Failed to delete user:', err);
-          // (Сервіс сам покаже toast про помилку)
-          // Все одно закриваємо модалку.
           this.#modalService.close();
         },
       });
   }
-  // --------------------------------------------
 }
