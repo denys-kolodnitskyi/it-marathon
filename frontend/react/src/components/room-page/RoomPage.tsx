@@ -14,6 +14,9 @@ import { ROOM_PAGE_TITLE } from "./utils.ts";
 import "./RoomPage.scss";
 
 const RoomPage = () => {
+  const POLL_INTERVAL = 100;
+  const MAX_POLL_RETRIES = 20;
+
   const { showToast } = useToaster();
   const { userCode } = useParams();
 
@@ -79,6 +82,48 @@ const RoomPage = () => {
     return null;
   }
 
+  const handleParticipantDeletion = () => {
+    const currentCount = participants ? participants.length : 0;
+    if (currentCount === 0) return;
+    const expectedCount = currentCount - 1;
+
+    let retryCount = 0;
+
+    const pollForChanges = async () => {
+      retryCount++;
+
+      if (retryCount > MAX_POLL_RETRIES) {
+        showToast("Could not refresh list. Please reload.", "error", "large");
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `${BASE_API_URL}/api/users?userCode=${userCode}`,
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          },
+        );
+
+        if (!response.ok) throw new Error("Fetch failed");
+
+        const updatedList: GetParticipantsResponse = await response.json();
+
+        if (updatedList.length === expectedCount) {
+          fetchParticipants();
+          fetchRoomDetails();
+        } else {
+          setTimeout(pollForChanges, POLL_INTERVAL);
+        }
+      } catch {
+        showToast("Error updating participants.", "error", "large");
+      }
+    };
+
+    setTimeout(pollForChanges, POLL_INTERVAL);
+  };
+
   return (
     <main className="room-page">
       {isLoading ? <Loader /> : null}
@@ -87,10 +132,7 @@ const RoomPage = () => {
         participants={participants ?? []}
         roomDetails={roomDetails ?? ({} as GetRoomResponse)}
         onDrawNames={() => fetchRandomize()}
-        onDeletedParticipant={() => {
-          fetchParticipants();
-          fetchRoomDetails();
-        }}
+        onDeletedParticipant={handleParticipantDeletion}
       />
     </main>
   );
