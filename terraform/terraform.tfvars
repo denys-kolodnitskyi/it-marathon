@@ -84,4 +84,4 @@ db_subnet_group_name = "rds-private-subnet-group"
 ################################################################################
 
 domain_name = "s4yntn1ckx.pp.ua"
-certificate_arn = "arn:aws:acm:eu-central-1:893915939303:certificate/9db2b62a-83ab-4a24-875b-7781ba5a9d4d"
+certificate_arn = "arn:aws:acm:eu-central-1:893915939303:certificate/b94ad320-e254-4440-903f-cbffa858510d"
